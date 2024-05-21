@@ -1,4 +1,10 @@
 <?php 
+// For page secure  start
+session_start();
+if(!empty($_SESSION['user_id'])){
+
+
+// Database connection
 $conn = mysqli_connect('localhost', 'root', '', 'db_course_info');
 
 if (!$conn) {
@@ -87,7 +93,7 @@ mysqli_close($conn);
                 <input type="text" name="course_length" required><br>
                 Total Semester: <br>
                 <input type="number" name="total_semester" required><br><br><br><br>
-                <input type="submit" value="Insert" name="submit_course_summary" class="btn btn-secondary mt-1">
+                <input type="submit" value="Insert" name="submit_course_summary" class="btn btn-success mt-1">
             </form>
         </div>
 
@@ -105,7 +111,7 @@ mysqli_close($conn);
                 <input type="number" name="credit" required><br>
                 Teacher Assign: <br>
                 <input type="number" name="teacher_id" required><br><br>
-                <input type="submit" value="Insert" name="submit_course_info" class="btn btn-secondary">
+                <input type="submit" value="Insert" name="submit_course_info" class="btn btn-success">
             </form>
         </div>
 
@@ -119,10 +125,9 @@ mysqli_close($conn);
                 <input type="text" name="teacher_name" required><br>
                 Designation: <br>
                 <input type="text" name="designation" required><br><br><br><br><br><br>
-                <input type="submit" value="Insert" name="submit_faculty_info" class="btn btn-secondary mt-2">
+                <input type="submit" value="Insert" name="submit_faculty_info" class="btn btn-success mt-2">
             </form>
         </div>
-        <a class="mt-3 h5 btn btn-sm btn-secondary" href="../">Go to home</a>
         <a class="mt-1 h5 btn btn-sm btn-success" href="view.php">Admin View</a>
     </div>
     <!-- <details>
@@ -137,3 +142,11 @@ mysqli_close($conn);
 </div>
 </body>
 </html>
+
+<?php 
+// For page secure  end
+}
+else{
+    header('location: login.php');
+}
+?>

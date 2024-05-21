@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2024 at 11:31 AM
+-- Generation Time: May 21, 2024 at 08:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 7.4.1
 
@@ -63,7 +63,7 @@ CREATE TABLE `course_summary` (
 --
 
 INSERT INTO `course_summary` (`csid`, `total_credit`, `course_length`, `total_semester`) VALUES
-(1001, 36, '1.5 years', 3);
+(1001, 36, '1.5 Years', 3);
 
 -- --------------------------------------------------------
 
@@ -87,6 +87,28 @@ INSERT INTO `faculties` (`fid`, `teacher_name`, `designation`) VALUES
 (3, 'Prof Md. Masum', 'Head Dept of CSE'),
 (4, 'Prof Dr. M A Al Mumin', 'Professor Dept of CSE');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `status` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `status`) VALUES
+(3, 'Md Shahidul Alam', 'shahidulalam447', 'publish'),
+(4, 'Md Rashadul Kabir Mozumdar', 'rkmlimon', 'publish'),
+(5, 'Hafizur Rahman', 'hafiz196', 'publish');
+
 --
 -- Indexes for dumped tables
 --
@@ -109,6 +131,22 @@ ALTER TABLE `course_summary`
 --
 ALTER TABLE `faculties`
   ADD PRIMARY KEY (`fid`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

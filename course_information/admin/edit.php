@@ -1,4 +1,10 @@
 <?php 
+// For page secure  start
+session_start();
+if(!empty($_SESSION['user_id'])){
+
+
+// Database connection
 $conn = mysqli_connect('localhost', 'root', '', 'db_course_info');
 
 if(!$conn) {
@@ -179,7 +185,7 @@ if(isset($_POST['submit_faculty_info'])){
                 <input type="submit" value="Update" name="submit_faculty_info" class="btn btn-success mt-2">
             </form>
         </div>
-        <a class="mt-4 btn btn-sm btn-success" href="view.php">Admin View</a>
+        <a class="mt-1 btn btn-sm btn-success" href="view.php">Admin View</a>
     </div>
     <!-- <details>
             <summary>Team Members | 6th Batch</summary>
@@ -194,3 +200,10 @@ if(isset($_POST['submit_faculty_info'])){
 
 </body>
 </html>
+<?php 
+// For page secure  end
+}
+else{
+    header('location: login.php');
+}
+?>
