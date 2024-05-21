@@ -8,7 +8,7 @@ It's all about Web Technologies projects.
 
 
 ### Project requirement for run:
-php version 7.4.1
-run sql command from course_information > db_script > db_course_info.sql in this project
-start Apache and MySQL from XAMPP Control Panel
-write localhost/projectDirectoryName at address bar in a browser for run
+php version 7.4.1 <br>
+run sql command from course_information > db_script > db_course_info.sql in this project <br>
+start Apache and MySQL from XAMPP Control Panel<br>
+write localhost/projectDirectoryName at address bar in a browser for run <br>
