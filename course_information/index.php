@@ -116,10 +116,10 @@
     <details>
             <summary>Team Members | 6th Batch</summary>
             <p>
-                MD SHAHIDUL ALAM | Reg: 2023822017 <br>
-                MD. Rashadul Kabir Mozumdar | Reg: 2023822016<br>
+                Md Shahidul Alam | Reg: 2023822017 <br>
+                Md Rashadul Kabir Mozumdar | Reg: 2023822016<br>
                 Hafizur Rahman | Reg: 2023822012 <br><br>
-                <a href="admin/view.php">Admin Panel</a>
+                <a href="admin/login.php" target="_blank">Admin Panel</a>
             </p>
     </details>
     </div><br><br>

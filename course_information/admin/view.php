@@ -1,6 +1,10 @@
 <?php 
+// For page secure  start
+session_start();
+if(!empty($_SESSION['user_id'])){
+
 // Database connection
-$conn = mysqli_connect('localhost', 'root', '', 'db_course_info');
+$conn = mysqli_connect('localhost', 'root', '', 'db_course_info');   
 
 // Check connection
 if (!$conn) {
@@ -71,10 +75,11 @@ if (isset($_GET['deleteid3'])) {
 <div class="container">
     <div class="row">
         <div class="col-sm-6 pt-4 mt-4">
-            <a class="m-1 h5 btn btn-sm btn-success d-flex" href="../">Go to home</a>
+            <a class="m-1 btn btn-sm btn-success d-flex" href="../">Go to home</a>
+            <a class="m-1 btn btn-sm btn-success" href="logout.php">Log Out</a>
         </div>
         <div class="col-sm-6 pt-4 mt-4">
-            <a class="m-1 h5 btn btn-sm btn-success d-flex justify-content-end" href="index.php">Add Information</a>
+            <a class="m-1 btn btn-sm btn-success d-flex justify-content-end" href="index.php">Add Information</a>
         </div>        
     </div>
 </div>
@@ -227,4 +232,11 @@ if (isset($_GET['deleteid3'])) {
 <?php
 // Close the database connection
 mysqli_close($conn);
+?>
+<?php 
+// For page secure  end
+}
+else{
+    header('location: login.php');
+}
 ?>
