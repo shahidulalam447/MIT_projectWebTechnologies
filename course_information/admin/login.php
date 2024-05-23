@@ -10,36 +10,30 @@ session_start();
 
 if(empty($_SESSION['user_id'])){
 
-if(isset($_POST['username']) && isset($_POST['password'])){
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    if(isset($_POST['username']) && isset($_POST['password'])){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
-    if(!empty($username) && !empty($password)) {
-        $sql = "SELECT id FROM users WHERE username='$username' AND password='$password'";
-        $sql_query = mysqli_query($conn, $sql);
-        $mysqli_num_rows = mysqli_num_rows($sql_query);
+        if(!empty($username) && !empty($password)) {
+            $sql = "SELECT id FROM users WHERE username='$username' AND password='$password'";
+            $sql_query = mysqli_query($conn, $sql);
+            $mysqli_num_rows = mysqli_num_rows($sql_query);
 
-        if($mysqli_num_rows) {
-            
-            $data = mysqli_fetch_array($sql_query);
-            $id = $data['id'];
+            if($mysqli_num_rows) {
+                $data = mysqli_fetch_array($sql_query);
+                $id = $data['id'];
+                $_SESSION['user_id'] = $id;
+                header('location: view.php');
+            } else {
+                echo "<script>alert('Invalid username or password');</script>";
+            }
 
-            $_SESSION['user_id']=$id;
-
-
-            header('location: view.php');
-        }else{
-            echo 'Invlid username or password';
+        } else {
+            echo "<script>alert('Fill up all fields');</script>";
         }
-
-    } else {
-
-        echo 'Fill up all fields';
     }
-}
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,36 +51,35 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-6  mt-4 pb-2 text-center bg-success text-white ">
-        <h2 class="mt-4 pb-2 ">Login Form</h2><hr>     
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">                
+            <h2 class="mt-4 pb-2 ">Login Form</h2><hr>     
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">                
                 User Name <br>
                 <input type="text" name="username" required><br>
                 Password <br>
                 <input type="text" name="password" required><br><br><br><br>
                 <input type="submit" value="Login" name="submit_login" class="btn btn-light col-sm-12">
-        </form>
-        <a class="h5 btn btn-sm btn-success d-flex col-sm-12" href="../">Go to home</a>
+            </form>
+            <a class="h5 btn btn-sm btn-success d-flex col-sm-12" href="../">Go to home</a>
         </div>
         <div class="col-sm-3"></div>
     </div>
 
-
     <!-- <details>
-            <summary>Team Members | 6th Batch</summary>
-            <p>
-                MD SHAHIDUL ALAM | Reg: 2023822017 <br>
-                MD. Rashadul Kabir Mozumdar | Reg: 2023822016<br>
-                Hafizur Rahman | Reg: <br><br>
-                <a href="admin/view.php">Admin Panel</a>
-            </p>
+        <summary>Team Members | 6th Batch</summary>
+        <p>
+            MD SHAHIDUL ALAM | Reg: 2023822017 <br>
+            MD. Rashadul Kabir Mozumdar | Reg: 2023822016<br>
+            Hafizur Rahman | Reg: 2023822012 <br><br>
+            <a href="admin/view.php">Admin Panel</a>
+        </p>
     </details> -->
 </div>
 
 </body>
 </html>
+
 <?php 
-}
-else{
+} else {
     header('location: view.php');
 }
 ?>

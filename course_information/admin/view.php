@@ -1,65 +1,65 @@
 <?php 
-// For page secure  start
+// For page secure start
 session_start();
-if(!empty($_SESSION['user_id'])){
+if (!empty($_SESSION['user_id'])) {
 
-// Database connection
-$conn = mysqli_connect('localhost', 'root', '', 'db_course_info');   
+    // Database connection
+    $conn = mysqli_connect('localhost', 'root', '', 'db_course_info');   
 
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-
-// Function to execute deletion with error handling
-function executeDeletion($conn, $sql, $param) {
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $param);
-    if (mysqli_stmt_execute($stmt)) {
-        return true;
-    } else {
-        echo "Error deleting record: " . mysqli_error($conn);
-        return false;
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
     }
-}
 
-// Delete Course Summary
-if (isset($_GET['deleteid1'])) {
-    $deleteid1 = $_GET['deleteid1'];
-    $sql = "DELETE FROM course_summary WHERE csid = ?";
-    if (executeDeletion($conn, $sql, $deleteid1)) {
-        header('Location:view.php');
-        exit;
+    // Function to execute deletion with error handling
+    function executeDeletion($conn, $sql, $param) {
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $param);
+        if (mysqli_stmt_execute($stmt)) {
+            return true;
+        } else {
+            echo "Error deleting record: " . mysqli_error($conn);
+            return false;
+        }
     }
-}
 
-// Delete Course Information
-if (isset($_GET['deleteid2'])) {
-    $deleteid2 = $_GET['deleteid2'];
-    $sql = "DELETE FROM courses WHERE cid = ?";
-    if (executeDeletion($conn, $sql, $deleteid2)) {
-        header('Location:view.php');
-        exit;
-    }
-}
-
-// Delete Faculty Information
-if (isset($_GET['deleteid3'])) {
-    $deleteid3 = $_GET['deleteid3'];
-
-    // Delete related courses first
-    $sql = "DELETE FROM courses WHERE teacher_id = ?";
-    if (executeDeletion($conn, $sql, $deleteid3)) {
-        // Now delete the faculty record
-        $sql = "DELETE FROM faculties WHERE fid = ?";
-        if (executeDeletion($conn, $sql, $deleteid3)) {
+    // Delete Course Summary
+    if (isset($_GET['deleteid1'])) {
+        $deleteid1 = $_GET['deleteid1'];
+        $sql = "DELETE FROM course_summary WHERE csid = ?";
+        if (executeDeletion($conn, $sql, $deleteid1)) {
             header('Location:view.php');
             exit;
         }
     }
-}
-?>
+
+    // Delete Course Information
+    if (isset($_GET['deleteid2'])) {
+        $deleteid2 = $_GET['deleteid2'];
+        $sql = "DELETE FROM courses WHERE cid = ?";
+        if (executeDeletion($conn, $sql, $deleteid2)) {
+            header('Location:view.php');
+            exit;
+        }
+    }
+
+    // Delete Faculty Information
+    if (isset($_GET['deleteid3'])) {
+        $deleteid3 = $_GET['deleteid3'];
+
+        // Delete related courses first
+        $sql = "DELETE FROM courses WHERE teacher_id = ?";
+        if (executeDeletion($conn, $sql, $deleteid3)) {
+            // Now delete the faculty record
+            $sql = "DELETE FROM faculties WHERE fid = ?";
+            if (executeDeletion($conn, $sql, $deleteid3)) {
+                header('Location:view.php');
+                exit;
+            }
+        }
+    }
+
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,43 +87,9 @@ if (isset($_GET['deleteid3'])) {
     <!-- Course Summary Section -->
     <section>
         <div class="row">
-            <div class="col-sm-12 pt-4 mt-4">
+            <div class="col-sm-12 pt-1 mt-1">
                 <h3 class="text-center pb-3 pt-3 bg-success text-white">Course Summary Information</h3>
-                <?php
-                $sql = "SELECT * FROM course_summary";
-                $query = mysqli_query($conn, $sql);
-
-                echo "<table class='table table-success'>
-                        <tr>
-                            <th>Course Summary Id</th>
-                            <th>Total Credit</th>
-                            <th>Course Length</th>
-                            <th>Total Semester</th>
-                            <th>Action</th>
-                        </tr>";
-                while ($data = mysqli_fetch_assoc($query)) {
-                    $csid = $data['csid'];
-                    $total_credit = $data['total_credit'];
-                    $course_length = $data['course_length'];
-                    $total_semester = $data['total_semester'];
-
-                    echo "<tr>
-                            <td>$csid</td>
-                            <td>$total_credit</td>
-                            <td>$course_length</td>
-                            <td>$total_semester</td>
-                            <td>
-                                <span class='btn btn-success'>
-                                <a href='edit.php?csid=$csid' class='text-white text-decoration-none'>Edit</a>
-                                </span>
-                                <span class='btn btn-danger'>
-                                <a href='view.php?deleteid1=$csid' class='text-white text-decoration-none'>Delete</a>
-                                </span>
-                            </td>
-                          </tr>";
-                }
-                echo "</table>";
-                ?>
+                <div id="course_summary_data"></div>
             </div>
         </div>
     </section>
@@ -131,46 +97,9 @@ if (isset($_GET['deleteid3'])) {
     <!-- Course Information Section -->
     <section>
         <div class="row">
-            <div class="col-sm-12 pt-4 mt-4">
+            <div class="col-sm-12">
                 <h3 class="text-center pb-3 pt-3 bg-success text-white">Course Information</h3>
-                <?php
-                $sql = "SELECT * FROM courses";
-                $query = mysqli_query($conn, $sql);
-
-                echo "<table class='table table-success'>
-                        <tr>
-                            <th>Course Id</th>
-                            <th>Course Code</th>
-                            <th>Course Title</th>
-                            <th>Total Semester</th>
-                            <th>Teacher Assign</th>
-                            <th>Action</th>
-                        </tr>";
-                while ($data = mysqli_fetch_assoc($query)) {
-                    $cid = $data['cid'];
-                    $course_code = $data['course_code'];
-                    $course_title = $data['course_title'];
-                    $credit = $data['credit'];
-                    $teacher_id = $data['teacher_id'];
-
-                    echo "<tr>
-                            <td>$cid</td>
-                            <td>$course_code</td>
-                            <td>$course_title</td>
-                            <td>$credit</td>
-                            <td>$teacher_id</td>
-                            <td>
-                                <span class='btn btn-success'>
-                                <a href='edit.php?cid=$cid' class='text-white text-decoration-none'>Edit</a>
-                                </span>
-                                <span class='btn btn-danger'>
-                                <a href='view.php?deleteid2=$cid' class='text-white text-decoration-none'>Delete</a>
-                                </span>
-                            </td>
-                          </tr>";
-                }
-                echo "</table>";
-                ?>
+                <div id="course_information_data"></div>
             </div>
         </div>
     </section>
@@ -178,65 +107,49 @@ if (isset($_GET['deleteid3'])) {
     <!-- Faculty Information Section -->
     <section>
         <div class="row">
-            <div class="col-sm-12 pt-4 mt-4">
+            <div class="col-sm-12">
                 <h3 class="text-center pb-3 pt-3 bg-success text-white">Faculty Information</h3>
-                <?php
-                $sql = "SELECT * FROM faculties";
-                $query = mysqli_query($conn, $sql);
-
-                echo "<table class='table table-success'>
-                        <tr>
-                            <th>Faculty Id</th>
-                            <th>Teacher Name</th>
-                            <th>Designation</th>
-                            <th>Action</th>
-                        </tr>";
-                while ($data = mysqli_fetch_assoc($query)) {
-                    $fid = $data['fid'];
-                    $teacher_name = $data['teacher_name'];
-                    $designation = $data['designation'];
-
-                    echo "<tr>
-                            <td>$fid</td>
-                            <td>$teacher_name</td>
-                            <td>$designation</td>
-                            <td>
-                                <span class='btn btn-success'>
-                                <a href='edit.php?fid=$fid' class='text-white text-decoration-none'>Edit</a>
-                                </span>
-                                <span class='btn btn-danger'>
-                                <a href='view.php?deleteid3=$fid' class='text-white text-decoration-none'>Delete</a>
-                                </span>
-                            </td>
-                          </tr>";
-                }
-                echo "</table>";
-                ?>
+                <div id="faculty_information_data"></div>
             </div>
         </div>
     </section>
 </div>
-<!-- <details>
-            <summary>Team Members | 6th Batch</summary>
-            <p>
-                MD SHAHIDUL ALAM | Reg: 2023822017 <br>
-                MD. Rashadul Kabir Mozumdar | Reg: 2023822016<br>
-                Hafizur Rahman | Reg: <br><br>
-                <a href="admin/view.php">Admin Panel</a>
-            </p>
-    </details> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function loadData(table_type, page) {
+    $.ajax({
+        url: 'fetch_data.php',
+        type: 'GET',
+        data: {
+            table_type: table_type,
+            page: page
+        },
+        success: function(response) {
+            const data = JSON.parse(response);
+            if (table_type === 'course_summary') {
+                $('#course_summary_data').html(data.data + data.pagination);
+            } else if (table_type === 'courses') {
+                $('#course_information_data').html(data.data + data.pagination);
+            } else if (table_type === 'faculties') {
+                $('#faculty_information_data').html(data.data + data.pagination);
+            }
+        }
+    });
+}
 
+$(document).ready(function() {
+    loadData('course_summary', 1);
+    loadData('courses', 1);
+    loadData('faculties', 1);
+});
+</script>
 </body>
 </html>
 
 <?php
-// Close the database connection
-mysqli_close($conn);
-?>
-<?php 
-// For page secure  end
-}
-else{
+    // Close the database connection
+    mysqli_close($conn);
+} else {
     header('location: login.php');
 }
 ?>

@@ -51,7 +51,7 @@
             <tr>
                 <th>Course Code</th>
                 <th>Course Title</th>
-                <th>Assign Teacher</th>
+                <th>Faculty Id</th>
                 <th>Credit</th>
             </tr>
             <?php
@@ -77,7 +77,7 @@
     <h2>Faculty Information</h2>
     <table>
         <tr>
-            <th>Assign Teacher</th>
+            <th>Faculty Id</th>
             <th>Teacher Name</th>
             <th>Designation</th>
         </tr>
